@@ -2,14 +2,15 @@
 {% block content %}
 
 
-<h1></h1>
-
+<div class=leaderboard>
+<div class="jumbotron">
 <h2>Leaderboard</h2>
-<table style="width:100%">
+<p>Congrats you got {{ user.score }} / 10 correct!</p>
+<table>
 <tr>
     <th>Score</th>
     <th>Username</th>
-    <th>Date & Time</th>
+    <th>Date</th>
     </tr>
 {% for score in scoreboard %}
     <tr>
@@ -19,6 +20,8 @@
     </tr>
     {% endfor %}
 </table>
+</div>
+</div>
 {% endblock %}
 
 

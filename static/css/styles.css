@@ -12,8 +12,16 @@ img {
     padding: 3px;
 }
 
+.leaderboard {
+    padding: 50px;
+}
+table { 
+    width: 100%;
+}
+
 body {
     padding-top: 65px;
+    
 }
 
 @media (max-width: 979px) {
@@ -21,3 +29,4 @@ body {
     padding-top: 0px;
   }
 }
+
