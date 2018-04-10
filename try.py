@@ -5,7 +5,18 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-user = {}
+user = {"username":"",
+        "score" : 0 }
+
+def write_to_file(filename, data):
+    with open(filename, "a") as file:
+        file.writelines(data)
+
+def add_to_scoreboard(username, score):
+    write_to_file('data/scoreboard.txt', "{0} {1} - {2}\n".format(
+            score,
+            username.title(),
+            datetime.now().strftime("%d/%m/%y - %H:%M:%S")))
 
 @app.route('/', methods = ["GET","POST"])
 def login():
@@ -35,8 +46,10 @@ def check_answer():
         guess = request.form['answer'].title()
         answer = request.form["solution"]
         if url < 10:
+            
             if guess == answer:
                 url += 1
+                user['score'] += 1
                 return redirect(url)
             elif guess == "Pass":
                 url += 1
@@ -44,14 +57,17 @@ def check_answer():
             else:
                 return redirect(url)
         else:
+            add_to_scoreboard(user['username'], user['score'])
             return redirect('leaderboard')
             
  
 @app.route('/leaderboard')
 def leaderboard():
     return render_template("leaderboard.html")
+    
+
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
-            debug = True)   
+            debug = True)  
