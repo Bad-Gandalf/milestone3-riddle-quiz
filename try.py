@@ -14,17 +14,24 @@ def write_to_file(filename, data):
         file.writelines(data)
 
 def add_to_scoreboard(username, score):
-    write_to_file('data/scoreboard.txt', "{0} {1} - {2}\n".format(
+    write_to_file('data/scoreboard.txt', "{0} '{1}' '{2}'\n".format(
             score,
             username.title(),
-            datetime.now().strftime("%d/%m/%y - %H:%M:%S")))
+            datetime.now().strftime("%d/%m/%y")))
             
 def display_scoreboard():
     scoreboard = []
+    details =[]
     with open('data/scoreboard.txt', 'r') as score_data:
         scoreboard = score_data.readlines()
-    ordered = sorted(scoreboard, key= (lambda line: int(line.lstrip().split(' ')[0])))
-    return ordered
+        ordered = sorted(scoreboard, key= (lambda line: int(line.lstrip().split(' ')[0])))
+        for score in ordered[::-1]:
+            details.append(score.split())
+        
+    return details
+    
+
+    
 
 @app.route('/', methods = ["GET","POST"])
 def login():
@@ -73,6 +80,7 @@ def check_answer():
 @app.route('/leaderboard')
 def leaderboard():
     scoreboard = display_scoreboard()
+    
     return render_template("leaderboard.html", scoreboard=scoreboard)
     
 

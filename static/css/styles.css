@@ -4,7 +4,7 @@ img {
 }
 
 .item {
-    width: 120px;
+    width: 400px;
     min-height: 120px;
     max-height: auto;
     float: left;

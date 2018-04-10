@@ -1,12 +1,24 @@
 {% extends 'base.html' %} 
 {% block content %}
 
-<h1>Leaderboard</h1>
 
-{% for score in scoreboard[::-1] %}
-    <p>{{ score }}</p>
+<h1></h1>
+
+<h2>Leaderboard</h2>
+<table style="width:100%">
+<tr>
+    <th>Score</th>
+    <th>Username</th>
+    <th>Date & Time</th>
+    </tr>
+{% for score in scoreboard %}
+    <tr>
+        <td>{{ score[0] }}</td>
+        <td>{{ score[1] }}</td>
+        <td>{{ score[2] }}</td>
+    </tr>
     {% endfor %}
-
+</table>
 {% endblock %}
 
 
