@@ -6,14 +6,14 @@
         <div class="item">
             <img src="{{ riddle.image_source }}" />
         </div>
+        <h4>Score = {{ user.score }} / {{ riddle.url }}</h4>
     </div>
+    
     <div class="col-xs-12 col-lg-6">
         <h2>{{ riddle.riddle }}</h2>
     </div>
     <div class="col-xs-12 col-lg-6">
-        {% if error %}
-    <p class=error><strong>Error:</strong> {{ error }}
-  {% endif %}
+       
         <form method="POST" action ="/submit_answer">
             <label for="answer">Answer:</label>
             <input type="text" value='answer' name="answer" />
@@ -22,7 +22,17 @@
             <button>Submit</button>
         </form>
 
-
+<div>
+     {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+</div>
 
     </div>
 

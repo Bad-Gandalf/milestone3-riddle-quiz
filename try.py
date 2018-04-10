@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, flash, url_for
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'some_secret'
 
 user = {"username":"",
         "score" : 0 }
@@ -17,6 +18,13 @@ def add_to_scoreboard(username, score):
             score,
             username.title(),
             datetime.now().strftime("%d/%m/%y - %H:%M:%S")))
+            
+def display_scoreboard():
+    scoreboard = []
+    with open('data/scoreboard.txt', 'r') as score_data:
+        scoreboard = score_data.readlines()
+    ordered = sorted(scoreboard, key= (lambda line: int(line.lstrip().split(' ')[0])))
+    return ordered
 
 @app.route('/', methods = ["GET","POST"])
 def login():
@@ -36,7 +44,7 @@ def get_info(number):
             if obj["url"] == number:
                 riddle = obj
   
-    return render_template("member.html", riddle=riddle )
+    return render_template("member.html", riddle=riddle, user=user)
 
 
 @app.route('/submit_answer', methods = ["POST"])
@@ -55,6 +63,7 @@ def check_answer():
                 url += 1
                 return redirect(url)
             else:
+                flash("{} is incorrect. Please try again".format(guess))
                 return redirect(url)
         else:
             add_to_scoreboard(user['username'], user['score'])
@@ -63,7 +72,8 @@ def check_answer():
  
 @app.route('/leaderboard')
 def leaderboard():
-    return render_template("leaderboard.html")
+    scoreboard = display_scoreboard()
+    return render_template("leaderboard.html", scoreboard=scoreboard)
     
 
 
