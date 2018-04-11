@@ -1,6 +1,7 @@
 import os
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
+import re
 from datetime import datetime
 
 app = Flask(__name__)
@@ -9,6 +10,16 @@ app.secret_key = 'some_secret'
 user = {"username":"",
         "score" : 0 }
 
+def username_validator(username):
+    if len(username) > 12:
+        return False
+    elif len(username) < 3:
+        return False
+    else:
+        for char in username:
+            if char == ' ':
+                return False
+                
 def write_to_file(filename, data):
     with open(filename, "a") as file:
         file.writelines(data)
@@ -37,9 +48,12 @@ def display_scoreboard():
 def login():
     if request.method == "POST":
         username = request.form['username']
-        user['username'] = username
-        user['score'] = 0
-        return redirect('/1')
+        if username_validator(username) == False:
+            flash("Username must contain between 3 and 12 characters and cannot contain any spaces")
+        else:
+            user['username'] = username
+            user['score'] = 0
+            return redirect('/1')
     return render_template("index.html")
     
 
@@ -72,7 +86,7 @@ def check_answer():
                 url += 1
                 return redirect(url)
             else:
-                flash('"{}" is incorrect. Please try again'.format(guess))
+                flash('"{}" is incorrect. Please try again'.format(request.form['answer']))
                 return redirect(url)
         else:
             if guess == answer:
