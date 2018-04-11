@@ -1,15 +1,6 @@
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-.item {
-    width: 400px;
-    min-height: 120px;
-    max-height: auto;
-    float: left;
-    margin: 3px;
-    padding: 3px;
+.image-container img {
+    max-height: 300px;
+    width: auto;
 }
 
 .leaderboard {
@@ -24,9 +15,7 @@ body {
     
 }
 
-@media (max-width: 979px) {
-  body {
-    padding-top: 0px;
-  }
+.row {
+    text-align: center;
 }
 

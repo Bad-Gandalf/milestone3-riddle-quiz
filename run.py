@@ -1,7 +1,6 @@
 import os
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
-import re
 from datetime import datetime
 
 app = Flask(__name__)
@@ -11,7 +10,7 @@ user = {"username":"",
         "score" : 0 }
 
 def username_validator(username):
-    if len(username) > 12:
+    if len(username) > 10:
         return False
     elif len(username) < 3:
         return False
@@ -49,7 +48,7 @@ def login():
     if request.method == "POST":
         username = request.form['username']
         if username_validator(username) == False:
-            flash("Username must contain between 3 and 12 characters and cannot contain any spaces")
+            flash("Username must contain between 3 and 10 characters and cannot contain any spaces")
         else:
             user['username'] = username
             user['score'] = 0
@@ -86,7 +85,7 @@ def check_answer():
                 url += 1
                 return redirect(url)
             else:
-                flash('"{}" is incorrect. Please try again'.format(request.form['answer']))
+                flash('"{}" is incorrect. Please try again, or type "pass\" to skip the question.'.format(request.form['answer']))
                 return redirect(url)
         else:
             if guess == answer:
@@ -94,11 +93,10 @@ def check_answer():
                 add_to_scoreboard(user['username'], user['score'])
                 return redirect('leaderboard')
             elif guess == "Pass":
-                url += 1
                 add_to_scoreboard(user['username'], user['score'])
                 return redirect('leaderboard')
             else:
-                flash('"{}" is incorrect. Please try again'.format(guess))
+                flash('"{}" is incorrect. Please try again, or type "pass\" to skip the question.'.format(request.form['answer']))
                 return redirect(url)
             
             

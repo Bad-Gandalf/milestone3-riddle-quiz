@@ -1,40 +1,60 @@
 {% extends 'base.html' %} {% block content %}
 <h2>{{ page_title }}</h2>
-<div class="row">
+<div class="container">
 
-    <div class="col-xs-12 col-lg-8">
-        <div class="item">
-            <img src="{{ riddle.image_source }}" />
+
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="score">
+                <h4>{{ user.username }}, your score is {{ user.score }} / {{ total }}</h4>
+            </div>
         </div>
-        <h4>{{ user.username }}, your score is {{ user.score }} / {{ total }}</h4>
     </div>
-    
-    <div class="col-xs-12 col-lg-6">
-        <h2>{{ riddle.riddle }}</h2>
-    </div>
-    <div class="col-xs-12 col-lg-6">
-       
-        <form method="POST" action ="/submit_answer">
-            <label for="answer">Answer:</label>
-            <input type="text" value='answer' name="answer" />
-            <input type="hidden" id='url' name="url" value="{{ riddle.url }}" />
-            <input type="hidden" id='solution' name="solution" value="{{ riddle.answer }}" />
-            <button>Submit</button>
-        </form>
+    <br>
 
-<div>
-     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class="flashes">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="image-container">
+                <img src="{{ riddle.image_source }}" />
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="riddle">
+                <p>{{ riddle.riddle }}</p>
+            </div>
+        </div>
+    </div>
+  
+    <div class="col-xs-12 ">
+        <div class="row">
+
+            <form method="POST" action="/submit_answer">
+                <div class="form-group">
+                    <label for="answer">Answer:</label>
+                    <input type="text" value='answer' name="answer" />
+                    <input type="hidden" id='url' name="url" value="{{ riddle.url }}" />
+                    <input type="hidden" id='solution' name="solution" value="{{ riddle.answer }}" />
+                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                
+                </div>
+            </form>
+
+
+            <div class="flash-message">
+                {% with messages = get_flashed_messages() %} {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %} {% endwith %}
+            </div>
+        </div>
+    </div>
+
 </div>
-
-    </div>
-
 </div>
 {% endblock %}
