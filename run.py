@@ -1,13 +1,13 @@
 import os
 import json
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, redirect, flash, url_for, session
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'
 
-user = {"username":"",
-        "score" : 0 }
+
+
 
 def username_validator(username):
     if len(username) > 10:
@@ -50,8 +50,8 @@ def login():
         if username_validator(username) == False:
             flash("Username must contain between 3 and 10 characters and cannot contain any spaces")
         else:
-            user['username'] = username
-            user['score'] = 0
+            session['username'] = username
+            session['score'] = 0
             return redirect('/1')
     return render_template("index.html")
     
@@ -67,7 +67,7 @@ def get_info(number):
                 total = str(int(obj['url']) - 1)
         
   
-    return render_template("member.html", riddle=riddle, user=user, total=total)
+    return render_template("member.html", riddle=riddle, user=session, total=total, score=session['score'])
 
 
 @app.route('/submit_answer', methods = ["POST"])
@@ -79,7 +79,7 @@ def check_answer():
         if url < 10:
             if guess == answer:
                 url += 1
-                user['score'] += 1
+                session['score'] += 1
                 return redirect(url)
             elif guess == "Pass":
                 url += 1
@@ -89,11 +89,11 @@ def check_answer():
                 return redirect(url)
         else:
             if guess == answer:
-                user['score'] += 1
-                add_to_scoreboard(user['username'], user['score'])
+                session['score'] +=1
+                add_to_scoreboard(session['username'], session['score'])
                 return redirect('leaderboard')
             elif guess == "Pass":
-                add_to_scoreboard(user['username'], user['score'])
+                add_to_scoreboard(session['username'], session['score'])
                 return redirect('leaderboard')
             else:
                 flash('"{}" is incorrect. Please try again, or type "pass\" to skip the question.'.format(request.form['answer']))
@@ -106,7 +106,7 @@ def check_answer():
 def leaderboard():
     scoreboard = display_scoreboard()
     
-    return render_template("leaderboard.html", scoreboard=scoreboard, user=user)
+    return render_template("leaderboard.html", scoreboard=scoreboard, username=session['username'], score=session['score'])
     
 
 
