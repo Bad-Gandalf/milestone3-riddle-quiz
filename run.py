@@ -40,7 +40,21 @@ def display_scoreboard():
             details.append(score.split())
         
     return details
-    
+ 
+def get_message(score):
+    message = ""
+    if score < 3:
+        message = "A terrible score"
+    elif score < 6:
+        message = "A mediocre score"
+    elif score < 8: 
+        message = "A very average score"
+    elif score < 10:
+        message = "Close... but no cigar"
+    else:
+        message = "You have mad Google skills"
+        
+    return message   
 
     
 #Login page to set session library of username and score
@@ -78,6 +92,19 @@ def get_info(number):
         return render_template("member.html", riddle=riddle, user=session)
     else:
         return "<h2>This page is unavailable<h2>"
+        
+        
+@app.route('/skip_question', methods=["POST"])
+def skip():
+    if request.method == 'POST':
+        if session['url'] == 10:
+            add_to_scoreboard(session['username'], session['score'])
+            session['url'] += 1
+            return redirect(session['url'])
+        else:
+            session['url'] += 1
+            return redirect(session['url'])
+    
 
 #Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer and inform 
 #of 'pass' option. Will eventually redirect to leaderboard when all questions are answered or passed.
@@ -91,11 +118,8 @@ def check_answer():
                 session['url'] += 1
                 session['score'] += 1
                 return redirect(session['url'])
-            elif guess == "Pass":
-                session['url'] += 1
-                return redirect(session['url'])
             else:
-                flash('"{}" is incorrect. Try again, or type "pass\" to skip question.'.format(request.form['answer']))
+                flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
                 return redirect(session['url'])
                 
         elif session['url'] == 10:
@@ -104,12 +128,8 @@ def check_answer():
                 session['score'] += 1
                 add_to_scoreboard(session['username'], session['score'])
                 return redirect('leaderboard')
-            elif guess == "Pass":
-                session['url'] += 1
-                add_to_scoreboard(session['username'], session['score'])
-                return redirect('leaderboard')
             else:
-                flash('"{}" is incorrect. Please try again, or type "pass\" to skip the question.'.format(request.form['answer']))
+                flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
                 return redirect(session['url'])
             
             
@@ -117,9 +137,11 @@ def check_answer():
 #Display leaderboard 
 @app.route('/leaderboard')
 def leaderboard():
+    message = get_message(session['score'])
     scoreboard = display_scoreboard()
     
-    return render_template("leaderboard.html", scoreboard=scoreboard, user=session)
+    
+    return render_template("leaderboard.html", scoreboard=scoreboard, user=session, message=message)
  
   
 

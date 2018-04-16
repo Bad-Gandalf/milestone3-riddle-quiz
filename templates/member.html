@@ -19,7 +19,7 @@
 
     </div>
     <br>
-    
+
     <div class="col-xs-12">
 
         <div class="riddle">
@@ -29,7 +29,7 @@
     </div>
 
     <div class="col-xs-12 ">
-
+<div class="row">
 
         <form method="POST" action="/submit_answer">
             <div class="form-group">
@@ -41,9 +41,14 @@
 
 
             </div>
+
         </form>
-
-
+        <div class="form-group">
+            <form method="POST" action="/skip_question">
+                <button type="submit" class="btn btn-outline-primary">Skip</button>
+            </form>
+        </div>
+        </div>
         <div class="flash-message">
             <div class="flash-group">
                 {% with messages = get_flashed_messages() %} {% if messages %}
