@@ -92,7 +92,7 @@ def check_answer():
                 session['url'] += 1
                 return redirect(session['url'])
             else:
-                flash('"{}" is incorrect. Please try again, or type "pass\" to skip the question.'.format(request.form['answer']))
+                flash('"{}" is incorrect. Try again, or type "pass\" to skip question.'.format(request.form['answer']))
                 return redirect(session['url'])
                 
         elif session['url'] == 10:

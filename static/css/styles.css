@@ -11,6 +11,9 @@
 }
 .flash-group {
     text-align: center;
+    color: red;
+    background-color: #ffff0052;
+    border-radius: .25rem;
 }
 
 .riddle  {
@@ -18,6 +21,10 @@
 }
 
 .score {
+    text-align: center;
+}
+
+.page-title {
     text-align: center;
 }
 
