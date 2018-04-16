@@ -44,15 +44,15 @@ def display_scoreboard():
 def get_message(score):
     message = ""
     if score < 3:
-        message = "A terrible score"
+        message = "You scored " + str(session["score"]) +"/10. A terrible score"
     elif score < 6:
-        message = "A mediocre score"
+        message = "You scored " + str(session["score"]) +"/10. A mediocre score"
     elif score < 8: 
-        message = "A very average score"
+        message = "You scored " + str(session["score"]) +"/10. A very average score"
     elif score < 10:
-        message = "Close... but no cigar"
+        message = "You scored " + str(session["score"]) +"/10. Close... but no cigar"
     else:
-        message = "You have mad Google skills"
+        message = "You scored " + str(session["score"]) +"/10. You have mad Google skills"
         
     return message   
 
@@ -74,6 +74,7 @@ def login():
 #Render riddles with pictures and current score, also protects from users revisiting pages and cheating
 @app.route('/<number>', methods=["GET","POST"])
 def get_info(number):
+    total = str(int(session['url']) - 1)
     if str.isdigit(number):
         if int(number) == session["url"] and int(number) < 11:
             riddle = {}
@@ -89,7 +90,7 @@ def get_info(number):
         else:
             return redirect(session["url"])
             
-        return render_template("member.html", riddle=riddle, user=session)
+        return render_template("member.html", riddle=riddle, user=session, total=total)
     else:
         return "<h2>This page is unavailable<h2>"
         
@@ -137,11 +138,16 @@ def check_answer():
 #Display leaderboard 
 @app.route('/leaderboard')
 def leaderboard():
-    message = get_message(session['score'])
-    scoreboard = display_scoreboard()
-    
-    
-    return render_template("leaderboard.html", scoreboard=scoreboard, user=session, message=message)
+    if session['username'] != None and session["url"] >= 11:
+        message = get_message(session['score'])
+        scoreboard = display_scoreboard()
+        
+        
+        return render_template("leaderboard.html", scoreboard=scoreboard, user=session, message=message)
+    else:
+        message = " "
+        scoreboard = display_scoreboard()
+        return render_template("leaderboard.html", scoreboard=scoreboard, user=session, message=message)
  
   
 
