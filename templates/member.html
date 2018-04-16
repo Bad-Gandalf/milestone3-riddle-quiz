@@ -4,46 +4,47 @@
 
 
     <div class="col-xs-12">
-        
-            <div class="score">
-                <h4>{{ user.username }}, your score is {{ score }} / {{ total }}</h4>
-            </div>
-        
+
+        <div class="score">
+            <h4>{{ user.username }}, your score is {{ user.score }} / {{ user.url }}</h4>
+        </div>
+
     </div>
 
     <div class="col-xs-12">
-        
-            <div class="image-container">
-                <img src="{{ riddle.image_source }}" />
-            </div>
-        
+
+        <div class="image-container">
+            <img src="{{ riddle.image_source }}" />
+        </div>
+
     </div>
     <br>
     <div class="col-xs-12">
-        
-            <div class="riddle">
-                <p>{{riddle.url }}. {{ riddle.riddle }}</p>
-            </div>
-        
+
+        <div class="riddle">
+            <p>{{riddle.url }}. {{ riddle.riddle }}</p>
+        </div>
+
     </div>
-  
+
     <div class="col-xs-12 ">
-        
-
-            <form method="POST" action="/submit_answer">
-                <div class="form-group">
-                    
-                    <input type="text" name="answer" />
-                    <input type="hidden" id='url' name="url" value="{{ riddle.url }}" />
-                    <input type="hidden" id='solution' name="solution" value="{{ riddle.answer }}" />
-                    <button type="submit" class="btn btn-outline-primary">Submit</button>
-                    
-                
-                </div>
-            </form>
 
 
-            <div class="flash-message">
+        <form method="POST" action="/submit_answer">
+            <div class="form-group">
+
+                <input type="text" name="answer" />
+                <input type="hidden" id='url' name="url" value="{{ riddle.url }}" />
+                <input type="hidden" id='solution' name="solution" value="{{ riddle.answer }}" />
+                <button type="submit" class="btn btn-outline-primary">Submit</button>
+
+
+            </div>
+        </form>
+
+
+        <div class="flash-message">
+            <div class="flash-group">
                 {% with messages = get_flashed_messages() %} {% if messages %}
                 <ul class="flashes">
                     {% for message in messages %}
@@ -52,7 +53,8 @@
                 </ul>
                 {% endif %} {% endwith %}
             </div>
-        
+        </div>
+
     </div>
 
 </div>

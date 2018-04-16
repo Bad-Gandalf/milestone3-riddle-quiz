@@ -7,18 +7,17 @@ app = Flask(__name__)
 app.secret_key = 'some_secret'
 
 
-
+#Username validator to ensure all usernames are between 3 and 10 characters and contain no spaces
 
 def username_validator(username):
-    if len(username) > 10:
-        return False
-    elif len(username) < 3:
+    if len(username) < 3 or len(username) > 10:
         return False
     else:
         for char in username:
             if char == ' ':
                 return False
-                
+ 
+#Add to scoreboard               
 def write_to_file(filename, data):
     with open(filename, "a") as file:
         file.writelines(data)
@@ -26,9 +25,11 @@ def write_to_file(filename, data):
 def add_to_scoreboard(username, score):
     write_to_file('data/scoreboard.txt', "{0} {1} {2}\n".format(
             score,
-            username.title(),
+            username,
             datetime.now().strftime("%d/%m/%y")))
-            
+
+
+#Display scoreboard in ordered fashion and split scores into list for indexing into tables            
 def display_scoreboard():
     scoreboard = []
     details =[]
@@ -42,72 +43,82 @@ def display_scoreboard():
     
 
     
-
+#Login page to set session library of username and score
 @app.route('/', methods = ["GET","POST"])
 def login():
     if request.method == "POST":
-        username = request.form['username']
+        username = request.form['username'].strip()
         if username_validator(username) == False:
             flash("Username must contain between 3 and 10 characters and cannot contain any spaces")
         else:
             session['username'] = username
             session['score'] = 0
-            return redirect('/1')
+            session['url'] = 1
+            return redirect(session['url'])
     return render_template("index.html")
     
-
-@app.route('/<number>', methods=["GET", "POST"])
+#Render riddles with pictures and current score
+@app.route('/<number>', methods=["GET","POST"])
 def get_info(number):
-    riddle = {}
-    with open("data/riddle_data.json", "r") as json_data:
-        data = json.load(json_data)
-        for obj in data:
-            if obj["url"] == number:
-                riddle = obj
-                total = str(int(obj['url']) - 1)
+    if int(number) == session["url"]:
+        riddle = {}
+        with open("data/riddle_data.json", "r") as json_data:
+            data = json.load(json_data)
+            for obj in data:
+                if obj["url"] == number:
+                    riddle = obj
+                    
+    elif int(number) > 10:
+        return redirect('leaderboard')
         
-  
-    return render_template("member.html", riddle=riddle, user=session, total=total, score=session['score'])
+    else:
+        return redirect(session["url"])
+            
+    return render_template("member.html", riddle=riddle, user=session)
 
-
+#Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer and inform 
+#of 'pass' option. Will eventually redirect to leaderboard when all questions are answered or passed.
 @app.route('/submit_answer', methods = ["POST"])
 def check_answer():
     if request.method == 'POST':
-        url = int(request.form["url"])
-        guess = request.form['answer'].title()
+        guess = request.form['answer'].strip().title()
         answer = request.form["solution"]
-        if url < 10:
+        if session['url'] < 10:
             if guess == answer:
-                url += 1
+                session['url'] += 1
                 session['score'] += 1
-                return redirect(url)
+                return redirect(session['url'])
             elif guess == "Pass":
-                url += 1
-                return redirect(url)
+                session['url'] += 1
+                return redirect(session['url'])
             else:
                 flash('"{}" is incorrect. Please try again, or type "pass\" to skip the question.'.format(request.form['answer']))
-                return redirect(url)
-        else:
+                return redirect(session['url'])
+                
+        elif session['url'] == 10:
             if guess == answer:
-                session['score'] +=1
+                session['url'] += 1
+                session['score'] += 1
                 add_to_scoreboard(session['username'], session['score'])
                 return redirect('leaderboard')
             elif guess == "Pass":
+                session['url'] += 1
                 add_to_scoreboard(session['username'], session['score'])
                 return redirect('leaderboard')
             else:
                 flash('"{}" is incorrect. Please try again, or type "pass\" to skip the question.'.format(request.form['answer']))
-                return redirect(url)
+                return redirect(session['url'])
             
             
             
- 
+#Display leaderboard 
 @app.route('/leaderboard')
 def leaderboard():
     scoreboard = display_scoreboard()
     
-    return render_template("leaderboard.html", scoreboard=scoreboard, username=session['username'], score=session['score'])
-    
+    return render_template("leaderboard.html", scoreboard=scoreboard, user=session)
+ 
+  
 
 
 if __name__ == '__main__':
