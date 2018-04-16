@@ -60,21 +60,24 @@ def login():
 #Render riddles with pictures and current score, also protects from users revisiting pages and cheating
 @app.route('/<number>', methods=["GET","POST"])
 def get_info(number):
-    if int(number) == session["url"] and int(number) < 11:
-        riddle = {}
-        with open("data/riddle_data.json", "r") as json_data:
-            data = json.load(json_data)
-            for obj in data:
-                if obj["url"] == number:
-                    riddle = obj
-                    
-    elif int(number) > 10:
-        return redirect('leaderboard')
-        
-    else:
-        return redirect(session["url"])
+    if str.isdigit(number):
+        if int(number) == session["url"] and int(number) < 11:
+            riddle = {}
+            with open("data/riddle_data.json", "r") as json_data:
+                data = json.load(json_data)
+                for obj in data:
+                    if obj["url"] == number:
+                        riddle = obj
+                        
+        elif int(number) > 10:
+            return redirect('leaderboard')
             
-    return render_template("member.html", riddle=riddle, user=session)
+        else:
+            return redirect(session["url"])
+            
+        return render_template("member.html", riddle=riddle, user=session)
+    else:
+        return "<h2>This page is unavailable<h2>"
 
 #Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer and inform 
 #of 'pass' option. Will eventually redirect to leaderboard when all questions are answered or passed.
