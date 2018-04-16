@@ -57,10 +57,10 @@ def login():
             return redirect(session['url'])
     return render_template("index.html")
     
-#Render riddles with pictures and current score
+#Render riddles with pictures and current score, also protects from users revisiting pages and cheating
 @app.route('/<number>', methods=["GET","POST"])
 def get_info(number):
-    if int(number) == session["url"]:
+    if int(number) == session["url"] and int(number) < 11:
         riddle = {}
         with open("data/riddle_data.json", "r") as json_data:
             data = json.load(json_data)
