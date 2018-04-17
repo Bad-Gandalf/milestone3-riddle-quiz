@@ -56,10 +56,10 @@ def skip():
     if request.method == 'POST':
         if session['url'] == 10:
             add_to_scoreboard(session['username'], session['score'], score_data)
-            increment_url_and_score(1, 0)
+            increment_url_score(1, 0)
             return redirect(session['url'])
         else:
-            increment_url_and_score(1, 0)
+            increment_url_score(1, 0)
             return redirect(session['url'])
     
 
@@ -72,7 +72,7 @@ def check_answer():
         answer = request.form["solution"]
         if session['url'] < 10:
             if guess == answer:
-                increment_url_and_score(1, 1)
+                increment_url_score(1, 1)
                 return redirect(session['url'])
             else:
                 flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
@@ -80,7 +80,7 @@ def check_answer():
                 
         elif session['url'] == 10:
             if guess == answer:
-                increment_url_and_score(1, 1)
+                increment_url_score(1, 1)
                 add_to_scoreboard(session['username'], session['score'], score_data)
                 return redirect('leaderboard')
             else:
