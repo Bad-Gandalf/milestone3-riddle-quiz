@@ -22,7 +22,6 @@ def get_message(score):
         
     return message   
 
-    
 #Login page to set session library of username and score
 @app.route('/', methods = ["GET","POST"])
 def login():
@@ -55,22 +54,31 @@ def get_info(number):
 def skip():
     if request.method == 'POST':
         if session['url'] == 10:
-            add_to_scoreboard(session['username'], session['score'], score_data)
             increment_url_and_score(1, 0)
+            add_to_scoreboard(session['username'], session['score'], score_data)
             return redirect(session['url'])
         else:
             increment_url_and_score(1, 0)
             return redirect(session['url'])
     
 
-#Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer and inform 
-#of 'pass' option. Will eventually redirect to leaderboard when all questions are answered or passed.
+#Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer 
+#Will eventually redirect to leaderboard when all questions are answered or passed.
+#Catches cheaters pressing the back button and resubmitting the same answer to increase score
 @app.route('/submit_answer', methods = ["POST"])
 def check_answer():
     if request.method == 'POST':
         guess = request.form['answer'].strip().title()
         answer = request.form["solution"]
-        if session['url'] < 10:
+        if int(request.form['url']) < session['url']:
+            if guess == answer:
+                flash('No resubmissions, cheater!')
+                return redirect(session['url'])
+            else:
+                flash('No resubmissions, cheater!')
+                return redirect(session['url'])
+        
+        elif session['url'] < 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
                 return redirect(session['url'])
@@ -86,6 +94,8 @@ def check_answer():
             else:
                 flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
                 return redirect(session['url'])
+        else:
+            return redirect('leaderboard')
             
             
 #Display leaderboard 
