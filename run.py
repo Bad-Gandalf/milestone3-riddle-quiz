@@ -31,23 +31,20 @@ def login():
             flash("Username must contain between 3 and 10 characters and cannot contain any spaces")
         else:
             initiate_session(username)
-            return redirect(session['url'])
+            return redirect(url_for('quiz'))
     return render_template("index.html")
     
-#Render riddles with pictures and current score, also protects from users revisiting pages and cheating
-@app.route('/<number>', methods=["GET","POST"])
-def get_info(number):
+#Render riddles with pictures and current score
+@app.route('/quiz', methods=["GET","POST"])
+def quiz():
     total = questions_asked(session['url'])
-    if str.isdigit(number):
-        if int(number) == session["url"] and int(number) < 11:
-            riddle = match_page_info_with_url(riddle_json, number)
-        elif int(number) >= 11:
-            return redirect('leaderboard')
-        else:
-            return redirect(session["url"])
-        return render_template("member.html", riddle=riddle, user=session, total=total)
+    if session['url'] < 11:
+        riddle = match_page_info_with_url(riddle_json, session['url'])
     else:
-        return render_template("page_unavailable.html")
+        return redirect('leaderboard')
+        
+    return render_template("member.html", riddle=riddle, user=session, total=total)
+   
         
  #Skip button included to skip over question and still increment the session url by 1       
 @app.route('/skip_question', methods=["POST"])
@@ -56,47 +53,39 @@ def skip():
         if session['url'] == 10:
             increment_url_and_score(1, 0)
             add_to_scoreboard(session['username'], session['score'], score_data)
-            return redirect(session['url'])
+            return redirect('leaderboard')
         else:
             increment_url_and_score(1, 0)
-            return redirect(session['url'])
+            return redirect(url_for('quiz'))
     
 
 #Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer 
 #Will eventually redirect to leaderboard when all questions are answered or passed.
-#Catches cheaters pressing the back button and resubmitting the same answer to increase score
+
 @app.route('/submit_answer', methods = ["POST"])
 def check_answer():
     if request.method == 'POST':
         guess = request.form['answer'].strip().title()
         answer = request.form["solution"]
-        if int(request.form['url']) < session['url']:
-            if guess == answer:
-                flash('No resubmissions, cheater!')
-                return redirect(session['url'])
-            else:
-                flash('No resubmissions, cheater!')
-                return redirect(session['url'])
-        
-        elif session['url'] < 10:
+        if session['url'] < 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
-                return redirect(session['url'])
+                return redirect(url_for('quiz'))
             else:
                 flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
-                return redirect(session['url'])
-                
+                return redirect(url_for('quiz'))
+                    
         elif session['url'] == 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
                 add_to_scoreboard(session['username'], session['score'], score_data)
-                return redirect('leaderboard')
+                return redirect(url_for('quiz'))
             else:
                 flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
-                return redirect(session['url'])
+                return redirect(url_for('quiz'))
         else:
             return redirect('leaderboard')
-            
+        
             
 #Display leaderboard 
 @app.route('/leaderboard')
