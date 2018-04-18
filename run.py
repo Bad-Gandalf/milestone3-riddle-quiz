@@ -35,12 +35,11 @@ def login():
     return render_template("index.html")
     
 #Render riddles with pictures and current score
-@app.route('/quiz', methods=["GET","POST"])
+@app.route('/quiz')
 def quiz():
     total = questions_asked(session['url'])
-    if session['url'] < 11:
-        riddle = match_page_info_with_url(riddle_json, session['url'])
-    else:
+    riddle = match_page_info_with_url(riddle_json, session['url'])
+    if session['url'] > 10:
         return redirect('leaderboard')
         
     return render_template("member.html", riddle=riddle, user=session, total=total)
@@ -48,7 +47,7 @@ def quiz():
         
  #Skip button included to skip over question and still increment the session url by 1       
 @app.route('/skip_question', methods=["POST"])
-def skip():
+def skip_question():
     if request.method == 'POST':
         if session['url'] == 10:
             increment_url_and_score(1, 0)
@@ -56,36 +55,34 @@ def skip():
             return redirect('leaderboard')
         else:
             increment_url_and_score(1, 0)
-            return redirect(url_for('quiz'))
+    return redirect(url_for('quiz'))
     
 
 #Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer 
 #Will eventually redirect to leaderboard when all questions are answered or passed.
 
 @app.route('/submit_answer', methods = ["POST"])
-def check_answer():
+def submit_answer():
     if request.method == 'POST':
         guess = request.form['answer'].strip().title()
         answer = request.form["solution"]
         if session['url'] < 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
-                return redirect(url_for('quiz'))
             else:
                 flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
-                return redirect(url_for('quiz'))
-                    
+        
         elif session['url'] == 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
                 add_to_scoreboard(session['username'], session['score'], score_data)
-                return redirect(url_for('quiz'))
             else:
                 flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
-                return redirect(url_for('quiz'))
+                
         else:
             return redirect('leaderboard')
-        
+    
+    return redirect(url_for('quiz'))    
             
 #Display leaderboard 
 @app.route('/leaderboard')
