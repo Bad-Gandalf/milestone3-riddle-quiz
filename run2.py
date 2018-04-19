@@ -58,6 +58,8 @@ def skip_question():
     return redirect(url_for('quiz'))
     
 
+
+
 #Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer 
 #Will eventually redirect to leaderboard when all questions are answered or passed.
 
@@ -110,6 +112,22 @@ def js_submit_answer():
         total = questions_asked(session['url'])
         riddle = match_page_info_with_url(riddle_json, session['url'])
         return render_template("quiz_js.html", riddle=riddle, user=session, total=total)
+        
+@app.route('/js_skip_question', methods=["POST"])
+def js_skip_question():
+    if request.method == "POST":
+        if session['url'] == 10:
+            increment_url_and_score(1, 0)
+            add_to_scoreboard(session['username'], session['score'], score_data)
+            scores = get_scoreboard_data(score_data)
+            message = get_message(session['score']) 
+            return render_template('leaderboard_js.html', scores=scores, user=session, message=message)
+        else:
+            increment_url_and_score(1, 0)
+            total = questions_asked(session['url'])
+            riddle = match_page_info_with_url(riddle_json, session['url'])
+            return render_template("quiz_js.html", riddle=riddle, user=session, total=total)
+
         
 #Display leaderboard 
 @app.route('/leaderboard')
