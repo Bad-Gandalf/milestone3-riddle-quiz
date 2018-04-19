@@ -1,0 +1,21 @@
+<div class=leaderboard>
+<div class="jumbotron">
+<h2>Leaderboard</h2>
+<h6>{{ user.username }}</h6>
+<p>{{ message }}</p>
+<table>
+<tr>
+    <th>Username</th>
+    <th>Score</th>
+    <th>Date</th>
+    </tr>
+{% for score in scores %}
+    <tr>
+        <td>{{ score[1] }}</td>
+        <td>{{ score[0] }}</td>
+        <td>{{ score[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+</div>
