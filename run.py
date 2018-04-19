@@ -156,6 +156,12 @@ def leaderboard_no_login():
     scores = get_scoreboard_data(score_data)
     message = " "
     return render_template("leaderboard.html", scores=scores, user=session, message=message)
+    
+@app.route('/js_leaderboard_no_login')
+def js_leaderboard_no_login():
+    scores = get_scoreboard_data(score_data)
+    message = " "
+    return render_template("leaderboard_js.html", scores=scores, user=session, message=message)
        
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),

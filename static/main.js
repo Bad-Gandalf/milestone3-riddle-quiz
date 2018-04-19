@@ -52,5 +52,21 @@ $(document).ready(function() {
         });
         e.preventDefault();
     });
-
+$(document).on('click', "a#leaderboard", function(e) {
+        e.preventDefault();
+        var url = 'js_leaderboard_no_login';
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(response) {
+                $('#results').fadeOut(400);
+                setTimeout(function() {$('#results').html(response);}, 400);
+                $('#results').fadeIn(400);
+            },
+            error: function(error) {
+                console.log("Not Working");
+            }
+        });
+        e.preventDefault();
+});
 });
