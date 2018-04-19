@@ -10,11 +10,11 @@ def get_message(score):
     message = ""
     if session['url'] > 10:
         if score < 3:
-            message = "You scored " + str(session["score"]) +"/10. A terrible score"
+            message = "You scored " + str(session["score"]) +"/10. Terrible"
         elif score < 6:
-            message = "You scored " + str(session["score"]) +"/10. A mediocre score"
+            message = "You scored " + str(session["score"]) +"/10. Mediocre"
         elif score < 8: 
-            message = "You scored " + str(session["score"]) +"/10. A very average score"
+            message = "You scored " + str(session["score"]) +"/10. Above average"
         elif score < 10:
             message = "You scored " + str(session["score"]) +"/10. Close... but no cigar"
         else:
@@ -34,6 +34,21 @@ def login():
             return redirect(url_for('quiz'))
     return render_template("index.html")
     
+#Login page to set session library of username and score  - for use with javascript supported browsers
+@app.route('/js_login', methods = ["GET","POST"])
+def js_login():
+    if request.method == "POST":
+        username = request.form['username'].strip()
+        if username_validator(username) == False:
+            flash("Username must contain between 3 and 10 characters and cannot contain any spaces")
+            return render_template("index.html")
+        else:
+            initiate_session(username)
+            total = questions_asked(session['url'])
+            riddle = match_page_info_with_url(riddle_json, session['url'])
+            return render_template("quiz_js.html", riddle=riddle, user=session, total=total)
+    
+    
 #Render riddles with pictures and current score
 @app.route('/quiz')
 def quiz():
@@ -43,22 +58,6 @@ def quiz():
         return redirect('leaderboard')
         
     return render_template("member.html", riddle=riddle, user=session, total=total)
-   
-        
- #Skip button included to skip over question and still increment the session url by 1       
-@app.route('/skip_question', methods=["POST"])
-def skip_question():
-    if request.method == 'POST':
-        if session['url'] == 10:
-            increment_url_and_score(1, 0)
-            add_to_scoreboard(session['username'], session['score'], score_data)
-            return redirect('leaderboard')
-        else:
-            increment_url_and_score(1, 0)
-    return redirect(url_for('quiz'))
-    
-
-
 
 #Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer 
 #Will eventually redirect to leaderboard when all questions are answered or passed.
@@ -85,8 +84,11 @@ def submit_answer():
             return redirect('leaderboard')
     
     return redirect(url_for('quiz'))   
-    
-@app.route('/js_submit_answer' , methods=["GET", "POST"])
+
+#For js supporting browsers
+#Validate riddle answers, adjust score, if answer incorrect flash message will display incorrect answer 
+#Will eventually redirect to leaderboard when all questions are answered or passed.
+@app.route('/js_submit_answer' , methods=["POST"])
 def js_submit_answer():
     if request.method == "POST":
         guess = request.form["answer"]
@@ -112,7 +114,20 @@ def js_submit_answer():
         total = questions_asked(session['url'])
         riddle = match_page_info_with_url(riddle_json, session['url'])
         return render_template("quiz_js.html", riddle=riddle, user=session, total=total)
-        
+
+#Skip button included to skip over question and still increment the session url by 1       
+@app.route('/skip_question', methods=["POST"])
+def skip_question():
+    if request.method == 'POST':
+        if session['url'] == 10:
+            increment_url_and_score(1, 0)
+            add_to_scoreboard(session['username'], session['score'], score_data)
+            return redirect('leaderboard')
+        else:
+            increment_url_and_score(1, 0)
+    return redirect(url_for('quiz'))
+    
+#Skip button included to skip over question and still increment the session url by 1 - JS supported browsers   
 @app.route('/js_skip_question', methods=["POST"])
 def js_skip_question():
     if request.method == "POST":
