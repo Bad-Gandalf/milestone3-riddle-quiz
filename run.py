@@ -1,4 +1,4 @@
-from quiz_functions import *
+from helper import *
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'

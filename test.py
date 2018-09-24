@@ -1,7 +1,7 @@
 from run import app
 import unittest
 from flask import Flask, session
-from quiz_functions import initiate_session
+
 
 """I tried running some automated tests. Below is as far as I got, I could only test the login page validation,
  the rendering of the first page of the quiz and the leaderboard page. After this I could not find a way to correctly test the "/submit_answer"
@@ -36,12 +36,85 @@ class FlaskTestCase(unittest.TestCase):
         response = tester.get('/leaderboard_no_login', follow_redirects = True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(b'Leaderboard' in response.data)
+        
+    def test_skip_question(self):
+        tester = app.test_client(self)
+        tester.post('/', data=dict(username="tester"), follow_redirects = True)
+        response = tester.post('/skip_question', follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(b'tester, your score is 0 / 1' in response.data)
+        
+    def test_correct_answer(self):
+        tester = app.test_client(self)
+        tester.post('/', data=dict(username="tester"), follow_redirects = True)
+        response = tester.post('/submit_answer',data=dict(answer="time", solution="Time"), follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(b'tester, your score is 1 / 1' in response.data)
+        
+    def test_incorrect_answer(self):
+        tester = app.test_client(self)
+        tester.post('/', data=dict(username="tester"), follow_redirects = True)
+        response = tester.post('/submit_answer',data=dict(answer="dark", solution="Time"), follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(b'tester, your score is 0 / 0' in response.data)
+        self.assertTrue(b'is incorrect. Please try again.' in response.data)
+        
+    def test_all_questions_correct_leaderboard(self):
+        tester = app.test_client(self)
+        tester.post('/', data=dict(username="tester"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="time", solution="Time"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="mountain", solution="Mountain"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="river", solution="River"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="shoe", solution="Shoe"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="Fish", solution="Fish"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="dark", solution="Dark"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="teeth", solution="Teeth"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="egg", solution="Egg"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="Wind", solution="Wind"), follow_redirects = True)
+        response = tester.post('/submit_answer',data=dict(answer="talent", solution="Talent"), follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(b'You scored 10/10. You have mad Google skills' in response.data)
+        
+        
+    def test_complete_quiz_with_two_skips(self):
+        tester = app.test_client(self)
+        tester.post('/', data=dict(username="tester"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="time", solution="Time"), follow_redirects = True)
+        tester.post('/skip_question', follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="river", solution="River"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="shoe", solution="Shoe"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="Fish", solution="Fish"), follow_redirects = True)
+        tester.post('/skip_question', follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="teeth", solution="Teeth"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="egg", solution="Egg"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="Wind", solution="Wind"), follow_redirects = True)
+        response = tester.post('/submit_answer',data=dict(answer="talent", solution="Talent"), follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(b"8/10. Close... but no cigar" in response.data)
+        
+    def test_complete_quiz_with_wrong_answers_and_skips(self):
+        tester = app.test_client(self)
+        tester.post('/', data=dict(username="tester"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="time", solution="Time"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="tree", solution="Mountain"), follow_redirects = True)
+        tester.post('/skip_question', follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="river", solution="River"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="boot", solution="Shoe"), follow_redirects = True)
+        tester.post('/skip_question', follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="Fish", solution="Fish"), follow_redirects = True)
+        tester.post('/skip_question', follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="teeth", solution="Teeth"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="egg", solution="Egg"), follow_redirects = True)
+        tester.post('/submit_answer',data=dict(answer="Wind", solution="Wind"), follow_redirects = True)
+        response = tester.post('/submit_answer',data=dict(answer="talent", solution="Talent"), follow_redirects = True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(b'7/10. Above average' in response.data)
+        print (response.data)
+        
+        
+        
        
-    
-        
-        
-    
-        
+
         
 if __name__ == '__main__':
     unittest.main()

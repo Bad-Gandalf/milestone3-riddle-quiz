@@ -1,5 +1,5 @@
 import json
-from quiz_functions import (write_to_file, add_to_scoreboard, ordered_scoreboard, score_username_date, username_validator, match_page_info_with_url,
+from helper import (write_to_file, add_to_scoreboard, ordered_scoreboard, score_username_date, username_validator, match_page_info_with_url,
 questions_asked, initiate_session,)
 from run import app
 from datetime import datetime
