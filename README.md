@@ -73,4 +73,3 @@ I hit a brick wall when testing a post only route for the answer submissions.
 
 ### Acknowledgements
 
-[![Build Status](https://travis-ci.org/Bad-Gandalf/milestone3-riddle-quiz.svg?branch=master)](https://travis-ci.org/Bad-Gandalf/milestone3-riddle-quiz)

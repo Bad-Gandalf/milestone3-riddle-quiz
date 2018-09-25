@@ -68,9 +68,10 @@ def quiz():
 
 @app.route('/submit_answer', methods = ["POST"])
 def submit_answer():
+    riddle = match_page_info_with_url(riddle_json, session['url'])
     if request.method == 'POST':
         guess = request.form['answer'].strip().title()
-        answer = request.form["solution"]
+        answer = riddle["answer"]
         if session['url'] < 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
@@ -96,10 +97,11 @@ def submit_answer():
 #Javascript also removes alot of the issues with users using the back button to resubmit and cheat to get a higher total.
 @app.route('/js_submit_answer' , methods=["POST"])
 def js_submit_answer():
+    riddle = match_page_info_with_url(riddle_json, session['url'])
     if request.method == "POST":
         guess = request.form["answer"]
         guess = guess.strip().title()
-        answer = request.form["solution"]
+        answer = riddle['answer']
         if session['url'] < 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
