@@ -1,4 +1,4 @@
-# Code Institute - Milestone Project 3 - Riddle Me This...
+# Code Institute - Milestone Project 3 - [Riddle Me This...](https://tolkien-riddle-quiz.herokuapp.com/)
 #### by Patrick Doherty
 
 The brief I was given for this project was the following:
@@ -67,6 +67,7 @@ eventually leading to the leaderboard. I also made sure to do a few runs, includ
 test for the correct responses whther they were based on final score or incorrect answers. These can be found in test_app.py. All routes were tested including
 the routes specifically for javascript. I also used Postman to check that I recieving the correct HTML when sending information to routes.
 
+### Manual testing
 #### Preventing Cheating
 During my development I tired to break the game as often as possible, this seemed to be most easy by pressing the back button. I had originally designed the 
 app to have a specific url for each question and users could simply visit these urls and answer the questions again. I removed this possibility by using
@@ -92,7 +93,7 @@ I ran all my files through validators to check for errors.
 - Project was deployed to heroku with ease.
 - Created Procfile and requirements.txt
 - Created new heroku app and set environment variables.
-- Pushed to heroku.
+- Pushed to heroku. Click [here](https://tolkien-riddle-quiz.herokuapp.com/) to visit the site.
 
 ## Credits
 
