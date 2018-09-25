@@ -28,14 +28,16 @@ test_are_equal(match_page_info_with_url(riddle_json, 1), {
         "riddle"       : "This thing all things devours: Birds, beasts, trees, flowers; Gnaws iron, bites steel; Grinds hard stones to meal; Slays king, ruins town, And beats high mountain down",
         "answer"       : "Time",
         "url"          : "1",
-        "image_source" : "http://img.playbuzz.com/image/upload/f_auto,fl_lossy,q_auto/cdn/79003510-1e28-4caa-8067-0f850a1b30bb/20b6a5af-2be2-4592-81b1-0b27045fa05c.jpg"
+        "image_source" : "static/img/riddle-1.png",
+        "original_source": "http://img.playbuzz.com/image/upload/f_auto,fl_lossy,q_auto/cdn/79003510-1e28-4caa-8067-0f850a1b30bb/20b6a5af-2be2-4592-81b1-0b27045fa05c.jpg"
         
     })
 test_are_equal(match_page_info_with_url(riddle_json, 7), {
         "riddle"       : "Thirty white horses on a red hill, First they champ, Then they stamp, Then they stand still. ",
         "answer"       : "Teeth",
         "url"          : "7",
-        "image_source" : "http://images.mocpages.com/user_images/47094/1369141220m_SPLASH.jpg"
+        "image_source" : "static/img/riddle-7.png",
+        "original_source": "http://images.mocpages.com/user_images/47094/1369141220m_SPLASH.jpg"
     })        
 
 
