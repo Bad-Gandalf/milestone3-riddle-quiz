@@ -105,7 +105,7 @@ def js_submit_answer():
                 increment_url_and_score(1, 1)
             else:
                 flash('"{}" is incorrect. Please try again.'.format(request.form['answer']))
-        
+         # If the user has answered 10 questions their score will be added to the score board.
         elif session['url'] == 10:
             if guess == answer:
                 increment_url_and_score(1, 1)
