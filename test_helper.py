@@ -1,12 +1,9 @@
 import json
-from helper import (write_to_file, add_to_scoreboard, ordered_scoreboard, score_username_date, username_validator, match_page_info_with_url,
-questions_asked, initiate_session,)
-from run import app
-from datetime import datetime
+from helper import (username_validator, match_page_info_with_url, questions_asked)
 
-"""In this file I have tested some of my helper functions I have created to work with the routes. I have been unable to 
-test functions that adjust the session dictionary. As for the scoreboard related functions I have done alot of manual testing
-regarding these."""
+"""In this file I have tested some of my helper functions I have created to work with the routes.
+They helped me design the functions in a TDD way. The majority of autmated testing for this project can
+be found in test.py"""
 
 
 riddle_json = 'data/riddle_data.json'

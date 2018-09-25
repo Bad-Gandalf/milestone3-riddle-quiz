@@ -12,7 +12,7 @@ Multiple players can play an instance of the game at the same time, each in thei
 Create a leaderboard that ranks top scores for all (at least recent) users.
 
 #### I completed this brief and on the suggestion of my mentor I went and converted into a one-page app with the use of javascript. If the user's
-browser has disabled  javascript it will revert to the normal multi-page app.
+browser has disabled javascript it will revert to the normal multi-page app.
 
 ## UX
 #### User stories
