@@ -29,16 +29,13 @@ basic criteria. Once a username is acceptable the user will be directed to the f
 ## Features
 
 ### Existing Features
-- Bugs - For raising tickets when a problem is encountered and other users can discuss this in a forum. Priority is given by upvotes.
-- Features - Essentially the same as Bugs but for new feature proposals, and replacing upvotes with monetary contributions.
-- Blog - Simple blog app detailing updates on Bugs or Features, only developers can create these.
-- Cart - Shopping cart app where users can choose a feature and the amount they wish to contribute. 
-- Checkout - Processes payments from users.
-- Stats - Serializes information from models and uses this to create statistical charts displaying bug/feature/workflow statistics.
+- Simple Quiz App
 
 ### Features Left to Implement
 - Quiz - Users can upload quiz questions, if they are approved they can be added to a bank of questions. Users can then take a quiz made from these questions and compare results
 on a scoreboard.
+- Use a database instead of .txt file. 
+- Create authentication to protect usernames for individuality on the site. 
 
 
 ## Technologies used:
@@ -49,27 +46,62 @@ on a scoreboard.
 ##### Git Bash & GitHub -for version control and backup of code
 ##### Bootstrap - A framework for developing responsive, mobile 1st websites.
 ##### Flask - python web framework
-
-
+##### Postman - Postman helps you develop APIs faster
+##### Libraries I needed to install
 - [JQuery](https://jquery.com)
     - The project uses **JQuery** to simplify DOM manipulation, and allow for AJAX requests.
-- 
-
-##### Plugin - Coverage - I needed during my testing of code. It generates reports which show you how much of your code you have tested.
-
 
 ## Testing
-## Automated testing
-Automated testing was limited but i was able to use it to test in the login functionality, the quiz rendering and the leaderboard page. 
-I hit a brick wall when testing a post only route for the answer submissions.
+ 
+### Automated testing
 
+#### TDD
+To ensure I was designing functions correctly I used tests to drive development. The majority of these can be found in helper_tests.py.
+I could not write tests for all functions especially those required to write, retrieve and operate on data in a text file. I did however print my results
+whilst designing the functions. I would also be able to check the text file itself to see if everything was working. I would also compare these to what 
+the site was rendering, over and over again until I was getting the results I wanted. 
 
+#### Test Suite
+Once I was happy with the site I used unittest to do fully automated tests of the quiz app. I simulated a user logging on, and then going through each of the questions
+eventually leading to the leaderboard. I also made sure to do a few runs, including incorrect answers and question skips. I made sure to 
+test for the correct responses whther they were based on final score or incorrect answers. These can be found in test_app.py. All routes were tested including
+the routes specifically for javascript. I also used Postman to check that I recieving the correct HTML when sending information to routes.
 
+#### Preventing Cheating
+During my development I tired to break the game as often as possible, this seemed to be most easy by pressing the back button. I had originally designed the 
+app to have a specific url for each question and users could simply visit these urls and answer the questions again. I removed this possibility by using
+"sessions". This would allow for tracking a users progress and ensuring they could not go backwards or forwards or potentially answer any question
+they were not supposed to. 
+
+At the very end of my testing I noticed I was using a value from a hidden input (the solution to the question) to validate the answers. Anyone who could 
+open dev tools could see this and simply copy it. They could even change it and that would work as the new solution. I removed this possiblity and found 
+a simple work around. 
+
+#### Cross browser testing
+I developed the site mainly on Chrome but have also since tested it on Safari and Firefox with no issues.
+All user stories have been checked with developer tools for their responsiveness. 
+Through this method I tested a wide variety of devices; iPhone 5,6,7,8,X, 
+iPad, iPad Pro, Google Pixel 2 and Galaxy S5. I am very happy with how my project scales on different devices.
+
+I ran all my files through validators to check for errors.
+    - W3C for CSS.
+    - W3C for HTML.
+    - JS Hint for Javascript.
+
+## Deployment
+- Project was deployed to heroku with ease.
+- Created Procfile and requirements.txt
+- Created new heroku app and set environment variables.
+- Pushed to heroku.
 
 ## Credits
 
 ### Media
+- All of the original links the images used can be found in /data/riddle_data.json. All taken from google image searches. 
 
 
 ### Acknowledgements
-
+- J. R. R. Tolkien for his timeless riddles.
+- Thanks to the following Youtubers for sharing their knowledge
+    - [Pretty Printed](https://www.youtube.com/channel/UC-QDfvrRIDB6F0bIO4I4HkQ)
+    - [Tekboi Tutorials](https://www.youtube.com/channel/UCIx6RlgCn3dXR5mHF33_wsA)

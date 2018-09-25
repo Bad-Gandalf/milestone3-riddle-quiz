@@ -6,7 +6,7 @@
     </div>
     <div class="col-xs-12">
         <div class="image-container">
-            <img src="{{ riddle.image_source }}" />
+            <img src="{{ riddle.image_source }}" alt="Clue"/>
         </div>
     </div>
     <br>
@@ -22,13 +22,12 @@
 
                     <input type="text" name="answer" />
                     <input type="hidden" id='url' name="url" value="{{ riddle.url }}" />
-                   
-                    <button type="submit" class="btn btn-outline-primary submit" id="submit_btn">Submit</button>
+                   <button type="submit" class="btn btn-outline-primary submit" id="submit_btn">Submit</button>
 
 
                 </div>
             </form>
-            </form id="skip">
+            
             <div class="form-group">
                 <form method="POST" action="/skip_question">
                     <button type="submit" class="btn btn-outline-primary skip" id="skip_btn">Skip</button>
@@ -50,4 +49,4 @@
     </div>
 
 </div>
-</div>
+
