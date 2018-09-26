@@ -11,8 +11,7 @@ If a player guesses incorrectly, their incorrect guess is stored and printed bel
 Multiple players can play an instance of the game at the same time, each in their own browser. Users are identified by a unique username, but note that no authentication features such as a password are required for this project.
 Create a leaderboard that ranks top scores for all (at least recent) users.
 
-#### I completed this brief and on the suggestion of my mentor I went and converted into a one-page app with the use of javascript. If the user's
-browser has disabled javascript it will revert to the normal multi-page app.
+#### I completed this brief and on the suggestion of my mentor I went and converted into a one-page app with the use of javascript. If the user's browser has disabled javascript it will revert to the normal multi-page app.
 
 ## UX
 #### User stories
@@ -31,7 +30,7 @@ basic criteria. Once a username is acceptable the user will be directed to the f
 ### Existing Features
 - Simple Quiz App
 
-### Features Left to Implement
+### Potential future features
 - Quiz - Users can upload quiz questions, if they are approved they can be added to a bank of questions. Users can then take a quiz made from these questions and compare results
 on a scoreboard.
 - Use a database instead of .txt file. 
@@ -78,12 +77,13 @@ At the very end of my testing I noticed I was using a value from a hidden input 
 open dev tools could see this and simply copy it. They could even change it and that would work as the new solution. I removed this possiblity and found 
 a simple work around. 
 
-#### Cross browser testing
+#### Cross-browser Testing
 I developed the site mainly on Chrome but have also since tested it on Safari and Firefox with no issues.
 All user stories have been checked with developer tools for their responsiveness. 
 Through this method I tested a wide variety of devices; iPhone 5,6,7,8,X, 
 iPad, iPad Pro, Google Pixel 2 and Galaxy S5. I am very happy with how my project scales on different devices.
 
+#### Code Validation
 I ran all my files through validators to check for errors.
     - W3C for CSS.
     - W3C for HTML.
