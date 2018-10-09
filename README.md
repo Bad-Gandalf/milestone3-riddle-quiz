@@ -38,10 +38,10 @@ on a scoreboard.
 
 
 ## Technologies used:
-##### HTML - hypertext markup language
-##### CSS - cascading style sheets 
-##### Javascript - client side scripting language
-##### Python - Programming Language
+##### HTML - a standardized system for tagging text files to achieve font, colour, graphic, and hyperlink effects on World Wide Web pages.
+##### CSS - cascading style sheets to style the content and layout of the site.
+##### Javascript - client side scripting language for asynchronous devlopment
+##### Python - Programming Language to create the backend that decides upon the responses to the user's input.
 ##### Git Bash & GitHub -for version control and backup of code
 ##### Bootstrap - A framework for developing responsive, mobile 1st websites.
 ##### Flask - python web framework
@@ -61,14 +61,14 @@ whilst designing the functions. I would also be able to check the text file itse
 the site was rendering, over and over again until I was getting the results I wanted. 
 
 #### Test Suite
-Once I was happy with the site I used unittest to do fully automated tests of the quiz app. I simulated a user logging on, and then going through each of the questions
+Once I was happy with the site I used unittests to do fully automated tests of the quiz app. I simulated a user logging on, and then going through each of the questions
 eventually leading to the leaderboard. I also made sure to do a few runs, including incorrect answers and question skips. I made sure to 
 test for the correct responses whther they were based on final score or incorrect answers. These can be found in test_app.py. All routes were tested including
 the routes specifically for javascript. I also used Postman to check that I recieving the correct HTML when sending information to routes.
 
 ### Manual testing
 #### Preventing Cheating
-During my development I tired to break the game as often as possible, this seemed to be most easy by pressing the back button. I had originally designed the 
+During my development I tried to break the game as often as possible, this seemed to be most easy by pressing the back button. I had originally designed the 
 app to have a specific url for each question and users could simply visit these urls and answer the questions again. I removed this possibility by using
 "sessions". This would allow for tracking a users progress and ensuring they could not go backwards or forwards or potentially answer any question
 they were not supposed to. 
@@ -87,12 +87,14 @@ iPad, iPad Pro, Google Pixel 2 and Galaxy S5. I am very happy with how my projec
 I ran all my files through validators to check for errors.
     - W3C for CSS.
     - W3C for HTML.
-    - JS Hint for Javascript.
+    - JS Hint for Javascript
+    - PEP8 online checker for Python
 
 ## Deployment
 - Project was deployed to heroku with ease.
 - Created Procfile and requirements.txt
 - Created new heroku app and set environment variables.
+- Linked my github and environment with heroku.
 - Pushed to heroku. Click [here](https://tolkien-riddle-quiz.herokuapp.com/) to visit the site.
 
 ## Credits

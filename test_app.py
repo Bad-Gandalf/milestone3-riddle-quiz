@@ -1,4 +1,4 @@
-from app import app
+from app import *
 import unittest
 from flask import Flask, session
 
