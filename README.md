@@ -92,6 +92,7 @@ I ran all my files through validators to check for errors.
 
 ## Deployment
 - Project was deployed to heroku with ease.
+- Only major difference between development and production is the need to import env file for unittests in development site.
 - Created Procfile and requirements.txt
 - Created new heroku app and set environment variables.
 - Linked my github and environment with heroku.

@@ -1,3 +1,14 @@
+/* Ensuring the navbar does not cover any body elements */
+body {
+    padding-top: 65px;
+}
+
+/* Ensuring all content is in the center of the page */
+.row {
+    justify-content: center;
+}
+
+/* Styling for the div that holds the image for each question */
 .image-container img {
     max-height: 300px;
     width: auto;
@@ -6,47 +17,15 @@
     display: block;
 }
 
-.form-group {
-    text-align: center;
-}
-.flash-group {
-    text-align: center;
-    color: red;
-    background-color: #ffff0052;
-    border-radius: .25rem;
+/* Styling to adjust image when screen sizes are changed */
+@media(max-width: 722px) {
+   .image-container img {
+       max-width: 330px;
+       height: auto;
+    }
 }
 
-.riddle  {
-    text-align: center
-}
-
-.score {
-    text-align: center;
-}
-
-.page-title {
-    text-align: center;
-}
-
-.leaderboard {
-    padding-top: 25px;
-    padding-bottom: 25px;
-}
-table { 
-    width: 100%;
-}
-
-body {
-    padding-top: 65px;
-   
-}
-
-
-
-.jumbotron {
-    text-align: center;
-}
-
+/* Styling for the submit answer form */
 .form-group {
     text-align: center;
 }
@@ -55,15 +34,41 @@ body {
     border: solid #007bff 1px;
     border-radius: .25rem;
     line-height: 1.5;
-    
-}
-.row {
-    justify-content: center;
 }
 
-@media(max-width: 722px) {
-   .image-container img {
-       max-width: 330px;
-       height: auto;
-    }
+/* Styling for flash message response to incorrect answers */
+.flash-group {
+    text-align: center;
+    color: red;
+    background-color: #ffff00;
+    border-radius: .25rem;
 }
+
+/* Styling for the riddle text */
+.riddle  {
+    text-align: center
+}
+
+/* Styling for the score keeping text */
+.score {
+    text-align: center;
+}
+
+.page-title {
+    text-align: center;
+}
+
+/* Styling of the leaderboard page */ 
+.leaderboard {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+table { 
+    width: 100%;
+}
+
+.jumbotron {
+    text-align: center;
+}
+
+
