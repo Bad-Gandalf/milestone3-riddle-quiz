@@ -63,11 +63,13 @@ def initiate_session(user):
     session['score'] = 0
 
 #Increment the score and or current url
-def increment_url_and_score(url, score):
-    session['url'] += int(url)
-    session['score'] += int(score)
+def correct():
+    session['url'] += 1
+    session['score'] += 1
+    
+def pass_question():
+    session['url'] += 1
 
 #Calculate number of questions asked to be displayed on page
-def questions_asked(url):
-    total = str(int(url) - 1)
-    return total
+def questions_asked():
+    return session['url'] - 1
